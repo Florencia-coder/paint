@@ -4,26 +4,21 @@ const useToggleCell = (setCells, defaultColorRef) => {
   return useCallback(
     (rowIdx, colIdx, isClick = false) => {
       setCells((prevCells) => {
+        const currentCell = prevCells[rowIdx][colIdx];
+        const isColorChange = isClick && currentCell.color;
+        const newColor = isColorChange ? null : defaultColorRef.current;
+
+        if (currentCell.color === newColor) {
+          return prevCells;
+        }
+
         const updatedRow = [...prevCells[rowIdx]];
-        const currentCell = updatedRow[colIdx];
 
-        // Si es un click y la celda ya tiene color, lo borra
-        if (isClick && currentCell.color) {
-          updatedRow[colIdx] = { ...currentCell, color: null };
-        }
-        // Si no, pinta la celda
-        else {
-          updatedRow[colIdx] = {
-            ...currentCell,
-            color: defaultColorRef.current,
-          };
-        }
+        updatedRow[colIdx] = { ...currentCell, color: newColor };
 
-        return [
-          ...prevCells.slice(0, rowIdx),
-          updatedRow,
-          ...prevCells.slice(rowIdx + 1),
-        ];
+        const newCells = [...prevCells];
+        newCells[rowIdx] = updatedRow;
+        return newCells;
       });
     },
     [setCells]

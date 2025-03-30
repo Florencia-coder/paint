@@ -1,25 +1,47 @@
-import { useEffect, useState } from "react";
+import { useState, useMemo, useEffect } from "react";
+import useWindowDimensions from "./useWindowDimensions";
+
+const ROWS = 100; // Ruler
 
 const useWindowSize = () => {
-  const [cells, setCells] = useState([]);
-  const CELL_SIZE = 10;
-  const ROWS = 100;
+  const { width: windowWidth, height: windowHeight } = useWindowDimensions();
 
+  // Calculate the cell size based on the window height
+  const cellSize = useMemo(() => {
+    return Math.ceil(windowHeight / ROWS);
+  }, [windowHeight]);
+
+  // Calculate the number of columns based on the window width and cell size
+  const columns = useMemo(() => {
+    return Math.floor(windowWidth / cellSize);
+  }, [windowWidth, cellSize]);
+
+  // Create the initial cell array
+  const [cells, setCells] = useState(() =>
+    Array.from({ length: ROWS }, () =>
+      Array(columns)
+        .fill()
+        .map(() => ({ color: "" }))
+    )
+  );
+
+  // Update cells when the number of columns changes
   useEffect(() => {
-    const updatecells = () => {
-      const cols = Math.floor(window.innerWidth / CELL_SIZE);
-      setCells(
-        Array.from({ length: ROWS }, () => Array(cols).fill({ color: "" }))
-      );
-      // setCells(Array.from({ length: 10 }, () => Array(10).fill({ color: "" })));
-    };
+    setCells(
+      Array.from({ length: ROWS }, () =>
+        Array(columns)
+          .fill()
+          .map(() => ({ color: "" }))
+      )
+    );
+  }, [columns]);
 
-    updatecells();
-    window.addEventListener("resize", updatecells);
-
-    return () => window.removeEventListener("resize", updatecells);
-  }, []);
-  return { cells, setCells };
+  return { 
+    cells, 
+    setCells, 
+    cellSize,
+    windowDimensions: { width: windowWidth, height: windowHeight }
+  };
 };
 
 export default useWindowSize;

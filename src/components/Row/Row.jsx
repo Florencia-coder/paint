@@ -1,18 +1,17 @@
-import React, { useEffect } from "react";
+import React from "react";
 import Column from "../Column/Column";
-import "./Row.css";
+import styles from "./row.module.css";
 
-const Row = ({ columns, rowIdx, toggleCell, handleMouseEnter }) => {
-  console.log(`Fila ${rowIdx} reenderizada`);
-
+const Row = ({ columns, rowIdx, toggleCell, handleMouseEnter, cellSize }) => {
   return (
-    <div key={rowIdx} className="row">
+    <div className={styles.row}>
       {columns.map((cell, colIdx) => (
         <Column
-          key={`${colIdx}- ${rowIdx}`}
+          key={`${colIdx}-${rowIdx}`}
           cell={cell}
           rowIdx={rowIdx}
           colIdx={colIdx}
+          cellSize={cellSize}
           toggleCell={toggleCell}
           handleMouseEnter={handleMouseEnter}
         />
@@ -21,4 +20,12 @@ const Row = ({ columns, rowIdx, toggleCell, handleMouseEnter }) => {
   );
 };
 
-export default React.memo(Row);
+export default React.memo(Row, (prevProps, nextProps) => {
+  return (
+    prevProps.rowIdx === nextProps.rowIdx &&
+    prevProps.cellSize === nextProps.cellSize &&
+    prevProps.toggleCell === nextProps.toggleCell &&
+    prevProps.handleMouseEnter === nextProps.handleMouseEnter &&
+    JSON.stringify(prevProps.columns) === JSON.stringify(nextProps.columns)
+  );
+});
