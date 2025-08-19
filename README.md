@@ -39,8 +39,8 @@ Una aplicación interactiva que simula un canvas de pintura tipo Paint. La aplic
 1. **Clonar el repositorio**:
 
    ```bash
-   git clone [https://github.com/Florencia-coder/paint]
-   cd carestino-test
+   git clone https://github.com/Florencia-coder/Paint.git
+   cd Paint
    ```
 
 2. **Instalar dependencias**:
@@ -84,3 +84,6 @@ src/
 - Implementación de hooks personalizados para separar lógica
 - Manejo eficiente del estado con React hooks
 - Diseño responsive sin dependencias externas
+
+## **Despliegue de PaintApp**
+El despliegue se realizó en la plataforma de [Vercel](https://vercel.com/). 
