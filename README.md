@@ -1,4 +1,4 @@
-# **Paint App - Test Técnico Carestino**
+# **Paint App**
 
 Una aplicación interactiva que simula un canvas de pintura tipo Paint. Desarrollada como test técnico para Worpik, orientada a un puesto en Carestino. La aplicación permite dibujar en una cuadrícula, con la capacidad de seleccionar diferentes colores mediante un modal contextual.
 
